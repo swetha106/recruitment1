@@ -61,12 +61,11 @@ try (Session session = sessionFactory.openSession()) {
 	
 	@Override
 	 public User validate(String email, String password) {
-		System.out.println("*1*");
 		
 	          User user = null;
 	        try (Session session = sessionFactory.openSession()) {
-	              user = (User) session.createQuery("FROM User U WHERE U.email = :email " )
-	            		  .setParameter("email", email) 
+	              user = (User) session.createQuery("FROM User U WHERE U.email = :email" )
+	            	  .setParameter("email", email) 
 	            		    .uniqueResult();
 
 	              

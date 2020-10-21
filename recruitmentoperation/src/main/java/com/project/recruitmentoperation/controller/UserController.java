@@ -138,8 +138,7 @@ public class UserController {
 	public ModelAndView updateUser(@Valid @ModelAttribute("usersession") User user, BindingResult result) {
 		ModelAndView mav = new ModelAndView();
 		if (result.hasErrors()) {
-			 System.out.println("*");
-
+			
 			mav.setViewName("editprofile");
 			// form validation error
 			return mav;

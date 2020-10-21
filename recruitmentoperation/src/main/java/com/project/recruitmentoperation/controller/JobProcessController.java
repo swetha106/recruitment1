@@ -31,7 +31,9 @@ public class JobProcessController {
 	 @Autowired
 		JobAppDAO jobAppDao;
 	 List<JobApplication> lst;
-
+	 JobProcessDetails job;
+	 JobApplication jobApplication;
+	 User user;
 		
 //		CANDIDATE PART
 		@RequestMapping(value = "/candidateJobAppList", method = RequestMethod.GET)
@@ -43,7 +45,7 @@ public class JobProcessController {
 				
 				int id=(int) session.getAttribute("id");
 				      
-		          User user=userService.viewprofile(id);
+		          user=userService.viewprofile(id);
 		     
 
 //	    	Getting list of interviewer from database
@@ -53,16 +55,13 @@ public class JobProcessController {
 				  {
 					  m.setViewName("CandidateJobApplicationList");
 			m.addObject("lst", lst);
-			 JobProcessDetails job=new JobProcessDetails();
+			 job=new JobProcessDetails();
 			    m.addObject("job",job);
 				  }
 				  else
 				  {
-					  JobProcessDetails job=user.getJobProcessDetails();
-					   m.addObject("job",job);
-						
-					  m.setViewName("status");
-					  
+					  m=status();	
+					
 				  }
 
 			return m;
@@ -81,26 +80,62 @@ public class JobProcessController {
 		 }
 		 @RequestMapping(value = "/uploadresume", method = RequestMethod.POST)
 		    public ModelAndView handleFileUpload(@ModelAttribute("job")  JobProcessDetails job,HttpServletRequest request)  {
-			   ModelAndView mav = new ModelAndView("status");
+			   ModelAndView mav = new ModelAndView();
 				
 			 HttpSession session = request.getSession();
 				
-				int id=(int) session.getAttribute("id");
 				   int jid=(int)  session.getAttribute("jid"); 
-		          User user=userService.viewprofile(id);
-		     
-		          JobApplication jobApplication=JobApplicationService.getJob(jid);
+		     //save job ID
+		           jobApplication=JobApplicationService.getJob(jid);
 					job.setJobApplication(jobApplication);
-					
+				//save User ID	
 					  job.setUser(user);
 					  user.setJobProcessDetails(job);
-		             	JobApplicationService.save(job);
-		             	mav.addObject("job",job);
-				  
+					  
+				//Save Resume	  
+					  
+					  
+					  
+					  
+			           	JobApplicationService.save(job);
+		             mav=status();	
+		          
 		        		 
 		  
 		        return mav;
 		    }  
-
+public ModelAndView status()
+{
+	ModelAndView mav=new ModelAndView();
+	String status;
+	 job=user.getJobProcessDetails();
+	System.out.println( job.getJobid());
+	   mav.addObject("job",job);
+	   jobApplication =job.getJobApplication();
+	   mav.addObject("jobApplication",jobApplication);
+	   if(job.getSelected())
+		   {
+		   if(jobApplication.getRounds()==job.getCurrentround())
+		   {
+			   status="Congrats!!!! You are selected for the applied position";
+		   }
+		   else
+		   {
+			   status="Congrats!!!! You are selected for the next round";
+		   }
+		   }
+	   else if(job.getSelected()==false && job.getCurrentround()>0)
+	   {
+		   status="Better luck next time!!";
+	   }
+	   else
+	   {
+		   status="Waiting for interview";
+	   }
+	   mav.addObject("status",status);
+		 
+	  mav.setViewName("status");
+	return mav;
+}
 
 }

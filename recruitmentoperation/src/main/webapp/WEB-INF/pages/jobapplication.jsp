@@ -16,7 +16,7 @@
 		method="post">
   		
 		<table >
-		
+		<th>Upload Your Resume</th>
 		<tr>
 				<td><form:label path="resume">resume</form:label></td>
 				<td><form:input  type="file" path="resume" name="resume" id="resume" /></td>
@@ -30,6 +30,9 @@
 		
 		</table>
 	</form:form>
+	<form action="userpage">
+			<input type="submit" value="Home">
+			</form>
 	
 </body>
 </html>

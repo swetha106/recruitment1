@@ -37,6 +37,13 @@ public class JobProcessDetails {
 	    public void setJobid(int jobid) {
 	        this.jobid = jobid;
 	    }
+	    public int getCurrentround() {
+	        return currentround;
+	    }
+
+	    public void setCurrentround(int currentround) {
+	        this.currentround = currentround;
+	    }
 	    public int getMarks() {
 	        return marks;
 	    }

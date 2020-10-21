@@ -23,7 +23,7 @@ Welcome ${usersession.username}
 		
 			<input type="submit" value="Job list">
 			</form>
-			<form action="logout">
+			<form action="home">
 			<input type="submit" value="logout">
 			</form>
 
