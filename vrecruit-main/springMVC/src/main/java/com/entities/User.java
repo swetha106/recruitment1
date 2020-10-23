@@ -13,6 +13,8 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -40,9 +42,10 @@ public class User {
 	 @Size(min =8, message = "Your password must contain 8 characters")
 	
 	  private String password;
-	  @DateTimeFormat(pattern = "dd/MM/yyyy")
 	  @NotNull(message = "Please enter your dob")
-
+	  @DateTimeFormat(pattern = "dd/MM/yy")
+	  @Temporal(value=TemporalType.DATE)
+	//  typeMismatch=Please use MM/dd/yyyy format
 	  private Date dob;
 	  @NotEmpty(message = "Please enter your email")
 	  @Email(message = "Enter a valid email")

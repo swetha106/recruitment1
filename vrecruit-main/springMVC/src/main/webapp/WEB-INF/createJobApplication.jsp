@@ -32,14 +32,18 @@
 			<option selected="selected">select</option>
 			<c:forEach items="${categories}" var="c">
 
-				<option><c:out value="${c}" /></option>
+				<option><c:out value="${c.category}" /></option>
 			</c:forEach>
 		</form:select>
 		<br />
-		<br />
-	position_type
-	<form:input path="position_type" />
-		<br />
+		
+		Position Type <form:select path="position_type">
+        <c:forEach items="${position}" var="c">
+
+				<option><c:out value="${c.position_type}" /></option>
+			</c:forEach>
+    </form:select>
+	<br />
 	job_description
 	<form:input path="job_description" />
 		<br />

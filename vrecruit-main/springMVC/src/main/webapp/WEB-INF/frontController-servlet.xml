@@ -66,6 +66,12 @@
 				<value>
 					com.entities.JobProcessDetails
 				</value>
+				<value>
+					com.entities.Position
+				</value>
+				<value>
+					com.entities.Category
+				</value>
 			</list>
 		</property>
 
@@ -89,4 +95,33 @@
 		<property name="maxUploadSize" value="20971520"></property>
 		<property name="maxInMemorySize" value="1048576"></property>
 	</bean>
+	
+	
+	
+	
+	 <bean id="messageSource"
+        class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+ 
+        <property name="basename" value="classpath:messages" />
+        </bean>
+<mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/init" />
+            <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+                <property name="paramName" value="lang"></property>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </beans>

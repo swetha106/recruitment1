@@ -24,10 +24,7 @@
 			<td>Job description</td>
 			<td>${jobApplication.job_description }</td>
 		</tr>
-		<tr>
-			<td>Current Round</td>
-			<td>${job.currentround }</td>
-		</tr>
+		
 		<tr>
 			<td>Status</td>
 			<td>${status}</td>

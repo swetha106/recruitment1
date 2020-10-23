@@ -54,7 +54,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/saveuser", method = RequestMethod.POST)
-	public ModelAndView createUser(@Valid @ModelAttribute("user") User user, BindingResult result) throws Exception {
+	public ModelAndView createUser(@Valid @ModelAttribute("user") User user, BindingResult result,HttpServletRequest request) throws Exception {
 		ModelAndView mav = new ModelAndView();
 
 		if (result.hasErrors()) {
@@ -63,11 +63,15 @@ public class UserController {
 			// form validation error
 			return mav;
 		}
-		mav.setViewName("home");
+		mav.setViewName("userpage");
 		if(userService.checkuser(user.getEmail()))
 		{
 			  userService.saveCustomer(user);
 			  mav.addObject("user", user);
+			  mav.addObject("usersession", user);
+			  HttpSession session = request.getSession();
+			   session.setAttribute("id",user.getId());
+			
 		    	
 		}
 		else

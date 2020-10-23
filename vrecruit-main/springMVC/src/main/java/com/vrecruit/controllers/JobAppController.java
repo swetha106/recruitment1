@@ -28,9 +28,12 @@ import com.dao.InterviewerDAO;
 import com.dao.JobAppDAO;
 import com.dao.JobProcessDao;
 import com.dao.JobProcessDaoImpl;
+import com.dao.PositionDao;
+import com.entities.Category;
 import com.entities.Interviewer;
 import com.entities.JobApplication;
 import com.entities.JobProcessDetails;
+import com.entities.Position;
 
 @RequestMapping("/jobApp")
 @Controller
@@ -44,18 +47,30 @@ public class JobAppController {
 
 	@Autowired
 	InterviewerDAO interviewerDao;
+	
+
+	@Autowired
+	PositionDao PositionDao;
+	@Autowired
+	com.dao.CategoryDao CategoryDao;
 
 	List<JobApplication> lst;
 
 	List<JobProcessDetails> jobProcessDetailsList;
-
-	List<String> categories = Arrays.asList("HR", "IT", "FINANCE");
+	List<Position> position ;
+	List<Category> categories;
 
 	@RequestMapping("/create")
 	public ModelAndView create(ModelAndView m) {
 		m.setViewName("createJobApplication");
 		m.addObject("jobApp", new JobApplication());
+		
+		position=PositionDao.getPosition();
+		categories=CategoryDao.getCategory();
+		System.out.print(position);
 		m.addObject("categories", categories);
+		m.addObject("position", position);
+		
 		return m;
 	}
 
