@@ -1,22 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"
-    isELIgnored="false"
-    %>
-    <%@ taglib prefix="c" 
-       uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>All Job Applications</title>
-</head>
-<body>
-<a href="/app">Home</a>
-<a href="/app/dashboard">Dasboard</a>
-<h1>All JobApplication List</h1>
-<br/><br/>
+<%@ include file="sidebar.jsp"%>
+<%@ include file="header.jsp"%>
 
- <table border="1">
+<div class="container-fluid  center">
+	
+
+	<div class="center">
+	
+
+ <table id="canjobListTable" border="1" align="center">
  <c:forEach items="${lst}" var="i">
  <br/>
  
@@ -34,10 +25,12 @@
 	    	</form>
     	</td>
     	<td>
-       
+        	
     	</td>
     	</tr>
  </c:forEach>
 </table>
+</div>
+</div>
 </body>
 </html>

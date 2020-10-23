@@ -64,7 +64,8 @@ try (Session session = sessionFactory.openSession()) {
 	
 	@Override
 	 public User validate(String email, String password) {
-	          User user ;
+		
+	          User user = null;
 	        try (Session session = sessionFactory.openSession()) {
 	              user = (User) session.createQuery("FROM User U WHERE U.email = :email " )
 	            		  .setParameter("email", email) 
@@ -75,13 +76,9 @@ try (Session session = sessionFactory.openSession()) {
 	            	        return user;
 				             
 	            }
-	            else
-	            {
-	            	user=null;
-	            }
 	           
 	        }
-	        return user;
+	        return null;
 	    }
 	
 	@Override

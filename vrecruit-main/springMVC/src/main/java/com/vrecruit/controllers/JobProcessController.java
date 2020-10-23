@@ -59,7 +59,11 @@ public class JobProcessController {
 			job = new JobProcessDetails();
 			m.addObject("job", job);
 		} else {
-			m = status();
+			//m = status();
+			String msg="You have already applied for a job";
+				m.addObject("msg", msg);
+				m.setViewName("message");
+				
 
 		}
 
@@ -90,19 +94,38 @@ public class JobProcessController {
 		// save User ID
 		job.setUser(user);
 		user.setJobProcessDetails(job);
-
+		String msg;
 		// Save Resume
-
+		if(job.getResume()!=null) {
 		JobApplicationService.save(job);
-		mav = status();
+			 msg="You have successfully applied for a job";
+		}
+		else
+		{
+			 msg="No resume found! try again";
+		}
+		mav.addObject("msg", msg);
+		
+	mav.setViewName("message");
+	
+		
+	//	mav = status();
 
 		return mav;
 	}
-
+	@RequestMapping(value = "/status")
 	public ModelAndView status() {
 		ModelAndView mav = new ModelAndView();
 		String status;
 		job = user.getJobProcessDetails();
+		if(job==null)
+		{
+			String msg="You have not applied for a job";
+			mav.addObject("msg", msg);
+		mav.setViewName("message");
+		return mav;
+			
+		}
 		System.out.println(job.getJobid());
 		mav.addObject("job", job);
 		jobApplication = job.getJobApplication();

@@ -42,10 +42,10 @@ public class User {
 	 @Size(min =8, message = "Your password must contain 8 characters")
 	
 	  private String password;
+	  @DateTimeFormat(pattern = "dd/MM/yyyy")
 	  @NotNull(message = "Please enter your dob")
-	  @DateTimeFormat(pattern = "dd/MM/yy")
 	  @Temporal(value=TemporalType.DATE)
-	//  typeMismatch=Please use MM/dd/yyyy format
+
 	  private Date dob;
 	  @NotEmpty(message = "Please enter your email")
 	  @Email(message = "Enter a valid email")

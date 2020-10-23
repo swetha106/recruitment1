@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.entities.JobApplication;
 import com.entities.JobProcessDetails;
 import com.entities.User;
+//import com.project.recruitmentoperation.entity.JobApplication;
+//import com.project.recruitmentoperation.entity.JobProcessDetails;
+//import com.project.recruitmentoperation.entity.User;
 
 @Repository
 @Transactional
@@ -70,6 +73,14 @@ public class JobProcessDaoImpl implements JobProcessDao {
 	@Transactional
 	@Override
 	public List<JobProcessDetails> update(JobProcessDetails obj) {
+//			List<JobProcessDetails> jobProcessList=null;
+//			try (Session session = sessionFactory.openSession()) {
+//			sessionFactory.getCurrentSession().update(obj);
+//			jobProcessList= (List<JobProcessDetails>) session.createQuery("FROM JobProcessDetails").list();
+//			return jobProcessList;
+//			}
+//			catch(Exception e) {e.printStackTrace();}
+//			return jobProcessList;
 		this.hibernateTemplate.saveOrUpdate(obj);
 		List<JobProcessDetails> jobApp = this.hibernateTemplate.loadAll(JobProcessDetails.class);
 		return jobApp;

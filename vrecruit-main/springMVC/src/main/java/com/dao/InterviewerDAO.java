@@ -37,6 +37,7 @@ public class InterviewerDAO {
 		List s= interviewers.stream().filter(e->e.getId()==id).collect(Collectors.toList());
 		
 		for(Object o:s) {
+			System.out.println(o);
 			res=(Interviewer) o;
 		}
 		return res;

@@ -1,22 +1,15 @@
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
- <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ include file="header.jsp"%>
+<%@ include file="sidebar.jsp"%>
 
+<div class="container-fluid idash center">
+	
 
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"  isELIgnored="false" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-
+	<div class="center">
+	
 <form:form id="regForm"  modelAttribute="usersession" action="updateuser"
 		method="post">
 
-		<table >
+		<table align="center">
 		<th>
 		Edit Profile
 		</th>
@@ -57,7 +50,7 @@
 			</tr>
 						<tr>
 				<td></td>
-				<td><form:button id="update" name="update">Update</form:button></td>
+				<td><form:button class="btn btn-primary" id="update" name="update">Update</form:button></td>
 			</tr>
 			<tr></tr>
 			<tr>
@@ -67,10 +60,9 @@
 			</tr>
 		</table>
 	</form:form>
-	<form action="userpage">
-			<input type="submit" value="Home">
-			</form>
+	
 
-
+</div>
+</div>
 </body>
 </html>

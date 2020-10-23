@@ -1,11 +1,13 @@
 package com.vrecruit.controllers;
 
+import java.lang.ProcessBuilder.Redirect;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +32,8 @@ import com.dao.JobAppDAO;
 import com.dao.JobProcessDao;
 import com.dao.JobProcessDaoImpl;
 import com.dao.PositionDao;
+import com.dao.CategoryDao;
+
 import com.entities.Category;
 import com.entities.Interviewer;
 import com.entities.JobApplication;
@@ -47,16 +52,16 @@ public class JobAppController {
 
 	@Autowired
 	InterviewerDAO interviewerDao;
-	
-
 	@Autowired
 	PositionDao PositionDao;
 	@Autowired
-	com.dao.CategoryDao CategoryDao;
+	CategoryDao CategoryDao;
 
 	List<JobApplication> lst;
 
 	List<JobProcessDetails> jobProcessDetailsList;
+
+	
 	List<Position> position ;
 	List<Category> categories;
 
@@ -80,9 +85,14 @@ public class JobAppController {
 		ModelAndView m = new ModelAndView();
 		HttpSession session = request.getSession();
 		int id = (Integer) session.getAttribute("interviewerId");
-//		|| categories.contains(jobApp.getCategory())
-		if (br.hasErrors()) {
-		//	System.out.println(br.toString());
+		System.out.println(categories.contains(jobApp.getCategory()));
+		if (br.hasErrors() || ! categories.contains(jobApp.getCategory())) {
+			if(!categories.contains(jobApp.getCategory())) {
+				m.addObject("CategoryError", "Category not Selected"); 
+			}
+			System.out.println(br.toString());
+			m.addObject("categories", categories);
+			
 			m.setViewName("createJobApplication");
 		} else {
 			jobApp.setInterviewer(interviewerDao.findById(id));
@@ -239,7 +249,7 @@ public class JobAppController {
 		
 		// update function will return the updated list
 		jobProcessDetailsList = jobProcessDaoImpl.update(candidateDetails);
-
+		
 		m.addObject("lst", jobProcessDetailsList);
 
 		return m;
