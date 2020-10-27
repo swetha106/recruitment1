@@ -8,7 +8,12 @@
 	
  
 		
-<table align="center">
+<table>
+<caption></caption>
+<tr>
+<th id="pro">YOUR PROFILE</th>
+</tr>
+
 		<tr>
 		<td> User Name:</td>
 			<td> ${usersession.username}</td>

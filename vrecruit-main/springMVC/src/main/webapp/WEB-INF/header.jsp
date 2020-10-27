@@ -4,7 +4,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<html>
+<!DOCTYPE>
+<html lang="en">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -16,6 +17,9 @@
 
 table {
 	font-size: 20px;
+		margin-right: auto;
+		margin-left: auto;
+		
 }
 
 .error {
@@ -43,12 +47,16 @@ font-size: 15px;
 	padding:7px;
 	text-align:center; 
 }
-
+.message
+{
+text-align:center; 
+		
+}
 </style>
 <body>
 	<div>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<a class="navbar-brand" href="/app"><font color="aqua">V</font>
+			<a class="navbar-brand" href="/app">V</font>
 				Recruit</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarText" aria-controls="navbarText"

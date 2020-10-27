@@ -1,20 +1,17 @@
-package com.entities;
+package com.pojo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-@Entity
-public class Interviewer {
+import com.entities.JobApplication;
+
+
+public class InterviewerPOJO {
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	
 	private int id;
 	
 	private String name;

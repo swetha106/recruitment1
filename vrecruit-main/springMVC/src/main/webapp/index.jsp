@@ -9,19 +9,7 @@
 		</a>
 	</div>
 	
-	<!-- 
-	<div class="col">
-		<h1>Click below to View All Job Applications</h1>
-		<a href="/app/jobApp/candidateJobAppList">See All Job Applications</a>
-	</div>
-	
-	<div class="col">
-		<h1>Register/Login as Candidate</h1>
-		<a href="/app/userregistration">Candidate Registeration</a>&nbsp&nbsp&nbsp
-		<a href="/app/loginform">Login as Candidate</a>
-	</div>
-	 -->
-	<div class="col">
+		<div class="col">
 		<h1>Register/Login as Candidate</h1>
 		<a href="/app/userregistration">
 		<button class="btn btn-danger">Candidate Registeration</button>

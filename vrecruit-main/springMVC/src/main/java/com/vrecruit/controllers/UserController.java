@@ -2,47 +2,45 @@ package com.vrecruit.controllers;
 
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.entities.User;
 import com.exception.UserExistsException;
 import com.exception.UserLoginException;
+import com.pojo.UserPOJO;
 import com.service.UserService;
-
-import org.apache.log4j.Logger;
 
 
 @Controller
-@SessionAttributes("usersession")
+
 public class UserController {
 	 private static final Logger logger = Logger.getLogger(UserController.class);
-		
+	 private static final String USERPAGE = "userpage";
+	 private static final String USERSESSION = "usersession";
+
+
 	@Autowired
 	private UserService userService;
 
 	@RequestMapping(value = "/home")
 	public ModelAndView home() {
-		ModelAndView mav = new ModelAndView("home");
-		return mav;
+		return new ModelAndView("home");
+		
 
 	}
 
@@ -53,8 +51,11 @@ public class UserController {
 		return "listusers";
 	}
 
-	@RequestMapping(value = "/saveuser", method = RequestMethod.POST)
-	public ModelAndView createUser(@Valid @ModelAttribute("user") User user, BindingResult result,HttpServletRequest request) throws Exception {
+	@PostMapping(value = "/saveuser")
+	public ModelAndView createUser(@Valid @ModelAttribute("user") UserPOJO userPOJO, BindingResult result,HttpServletRequest request) throws UserExistsException {
+		User user = new User();
+		BeanUtils.copyProperties(userPOJO, user);
+
 		ModelAndView mav = new ModelAndView();
 
 		if (result.hasErrors()) {
@@ -63,12 +64,12 @@ public class UserController {
 			// form validation error
 			return mav;
 		}
-		mav.setViewName("userpage");
+		mav.setViewName(USERPAGE);
 		if(userService.checkuser(user.getEmail()))
 		{
 			  userService.saveCustomer(user);
 			  mav.addObject("user", user);
-			  mav.addObject("usersession", user);
+			  mav.addObject(USERSESSION, user);
 			  HttpSession session = request.getSession();
 			   session.setAttribute("id",user.getId());
 			
@@ -90,8 +91,11 @@ public class UserController {
 	      return mav;
 	}
 
-	@RequestMapping(value = "/userregistration", method = RequestMethod.GET)
-	public ModelAndView showLogin(@ModelAttribute("user") User user) {
+	@RequestMapping(value = "/userregistration")
+	public ModelAndView showLogin(@ModelAttribute("user") UserPOJO userPOJO) {
+		User user = new User();
+		BeanUtils.copyProperties(userPOJO, user);
+
 		ModelAndView mav = new ModelAndView("userregistration");
 
 		mav.addObject("user", new User());
@@ -100,8 +104,11 @@ public class UserController {
 
 	}
 
-	@RequestMapping(value = "/loginform", method = RequestMethod.GET)
-	public ModelAndView showLoginform(@ModelAttribute("user") User user) {
+	@GetMapping(value = "/loginform")
+	public ModelAndView showLoginform(@ModelAttribute("user") UserPOJO userPOJO) {
+		User user = new User();
+		BeanUtils.copyProperties(userPOJO, user);
+
 		ModelAndView mav = new ModelAndView("candidatelogin");
 
 		mav.addObject("user", user);
@@ -110,25 +117,32 @@ public class UserController {
 
 	}
 
-	@RequestMapping(value = "/userpage", method = RequestMethod.GET)
-	public ModelAndView showUserPage(@ModelAttribute("usersession") User user) {
-		ModelAndView mav = new ModelAndView("userpage");
-		mav.addObject("usersession", user);
+	@GetMapping(value = "/userpage")
+	public ModelAndView showUserPage(@ModelAttribute("usersession") UserPOJO userPOJO) {
+		User user = new User();
+		BeanUtils.copyProperties(userPOJO, user);
+
+		ModelAndView mav = new ModelAndView(USERPAGE);
+		mav.addObject(USERSESSION, user);
 
 		return mav;
 
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@PostMapping(value = "/login")
 
-	public ModelAndView authenticate(@ModelAttribute("user") User user,HttpServletRequest request) throws Exception  {
-		String email = user.getEmail();
-		String password = user.getPassword();
-		User users = userService.validate(email, password);
+	public ModelAndView authenticate(@ModelAttribute("user") UserPOJO userPOJO,HttpServletRequest request) throws UserLoginException  {
+		
+		User users = new User();
+		BeanUtils.copyProperties(userPOJO, users);
+
+		String email = users.getEmail();
+		String password = users.getPassword();
+	 users = userService.validate(email, password);
 		if (users != null) {
 
-			ModelAndView mav = new ModelAndView("userpage");
-			mav.addObject("usersession", users);
+			ModelAndView mav = new ModelAndView(USERPAGE);
+			mav.addObject(USERSESSION, users);
 			 HttpSession session = request.getSession();
 			   session.setAttribute("id",users.getId());
 			   logger.info("user login successful!");
@@ -138,7 +152,7 @@ public class UserController {
 		} else {
 			throw new UserLoginException("Login not successful..");
 		}
-		//return null;
+		
 	}
 	@ExceptionHandler({UserLoginException.class})
 	   public ModelAndView handleException(UserLoginException e) {
@@ -147,32 +161,66 @@ public class UserController {
 		mav.addObject("errormsg",e.getUserException());
 	      return mav;
 	}
-	@RequestMapping(value = "/viewprofile")
-	public ModelAndView viewprofile(@ModelAttribute("usersession") User user) {
-		ModelAndView mav = new ModelAndView("profile");
+	@GetMapping(value = "/viewprofile")
+	public ModelAndView viewprofile(@ModelAttribute("usersession") UserPOJO userPOJO,HttpServletRequest request) {
+		
+		ModelAndView mav=new ModelAndView();
+		HttpSession session = request.getSession();
+		User user = new User();
+		BeanUtils.copyProperties(userPOJO, user);
+
+		int id = (int) session.getAttribute("id");
+
+		 user = userService.viewprofile(id);
+		
+				mav.addObject(USERSESSION, user);
+			
+mav.setViewName("profile");
 		return mav;
+		 
 	}
 
 	@RequestMapping(value = "/editprofile")
-	public ModelAndView editprofile(@ModelAttribute("usersession") User user) {
+	public ModelAndView editprofile(@ModelAttribute("usersession") UserPOJO userPOJO,HttpServletRequest request) {
+		User user = new User();
+		BeanUtils.copyProperties(userPOJO, user);
+		HttpSession session = request.getSession();
+
+		int id = (int) session.getAttribute("id");
+
+		 user = userService.viewprofile(id);
+
 		ModelAndView mav = new ModelAndView("editprofile");
-		mav.addObject("usersession", user);
+		mav.addObject(USERSESSION, user);
 		return mav;
 	}
 
-	@RequestMapping(value = "/updateuser", method = RequestMethod.POST)
-	public ModelAndView updateUser(@Valid @ModelAttribute("usersession") User user, BindingResult result) {
+	@PostMapping(value = "/updateuser")
+	public ModelAndView updateUser(@Valid @ModelAttribute("usersession") UserPOJO userPOJO, BindingResult result,HttpServletRequest request) {
+		HttpSession session = request.getSession();
+
+		int id = (int) session.getAttribute("id");
+
+		
+		User users;
+		 users = userService.viewprofile(id);
+			
+		BeanUtils.copyProperties(userPOJO, users);
+
 		ModelAndView mav = new ModelAndView();
-		if (result.hasErrors()) {
+			if (result.hasErrors()) {
 			
 			mav.setViewName("editprofile");
 			// form validation error
 			return mav;
 		}
-		userService.saveCustomer(user);
-		mav.setViewName("userpage");
-
-		mav.addObject("usersession", user);
+		userService.saveCustomer(users);
+		
+		mav.setViewName("message");
+		String msg="Edited successfully!!";
+		mav.addObject("msg", msg);
+		
+		mav.addObject(USERSESSION, users);
 		return mav;
 
 	}

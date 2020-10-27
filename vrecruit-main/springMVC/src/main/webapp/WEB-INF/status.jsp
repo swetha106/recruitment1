@@ -10,7 +10,10 @@
 	
 
 
-	<table align="center">
+	<table  class="tble" >
+	<caption></caption>
+	<tr>
+	<th id="status"></th>
 		<tr>
 			<td>Job Title</td>
 			<td>${jobApplication.title }</td>
@@ -21,7 +24,8 @@
 		</tr>
 		<tr>
 			<td>Job description</td>
-			<td>${jobApplication.job_description }</td>
+			
+			<td>${jobApplication.jobDescription }</td>
 		</tr>
 		
 		<tr>
@@ -30,7 +34,7 @@
 		</tr>
 	</table>
 
-
+  
 
 	
 </div>

@@ -8,10 +8,6 @@ import com.dao.JobProcessDao;
 import com.entities.JobApplication;
 import com.entities.JobProcessDetails;
 import com.entities.User;
-//import com.project.recruitmentoperation.dao.JobApplicationDao;
-//import com.project.recruitmentoperation.entity.JobApplication;
-//import com.project.recruitmentoperation.entity.JobProcessDetails;
-//import com.project.recruitmentoperation.entity.User;
 
 @Service
 public class JobProcessServiceImpl implements JobProcessService{

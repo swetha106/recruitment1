@@ -9,7 +9,11 @@
 <form:form id="login"  modelAttribute="user" action="login"
 		method="post">
 
-<table align="center">
+<table >
+<caption></caption>
+<tr>
+<th id="login">LOGIN PAGE </th>
+</tr>
 
 			<tr>
 				<td><form:label path="email">Email</form:label></td>

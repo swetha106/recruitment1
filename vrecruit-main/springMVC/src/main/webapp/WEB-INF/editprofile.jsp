@@ -9,10 +9,13 @@
 <form:form id="regForm"  modelAttribute="usersession" action="updateuser"
 		method="post">
 
-		<table align="center">
-		<th>
+		<table >
+		<caption></caption>
+		<tr>
+		<th id="edit">
 		Edit Profile
 		</th>
+		</tr>
 		 <form:hidden path="id"  value="${usersession.id}"/>
 		
 			<tr>

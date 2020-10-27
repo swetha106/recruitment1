@@ -5,28 +5,29 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dao.JobAppDAO;
-import com.dao.JobProcessDaoImpl;
 import com.entities.JobApplication;
 import com.entities.JobProcessDetails;
 import com.entities.User;
+import com.pojo.JobProcessDetailsPOJO;
 import com.service.JobProcessService;
 import com.service.UserService;
 
 @Controller
-@SessionAttributes("job")
+
 public class JobProcessController {
 	@Autowired
-	private JobProcessService JobApplicationService;
+	private JobProcessService jobProcessService;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -37,10 +38,10 @@ public class JobProcessController {
 	JobProcessDetails job;
 	JobApplication jobApplication;
 	User user;
-	
+	private static final String MESSAGE = "message";
 
 //		CANDIDATE PART
-	@RequestMapping(value = "/candidateJobAppList", method = RequestMethod.GET)
+	@GetMapping(value = "/candidateJobAppList")
 	public ModelAndView candidateJobAppList(HttpServletRequest request) {
 		ModelAndView m = new ModelAndView();
 
@@ -52,17 +53,15 @@ public class JobProcessController {
 
 //	    	Getting list of interviewer from database
 		lst = jobAppDao.getAll();
-		boolean jobs = JobApplicationService.validate(user);
+		boolean jobs = jobProcessService.validate(user);
 		if (jobs) {
 			m.setViewName("CandidateJobApplicationList");
 			m.addObject("lst", lst);
-			job = new JobProcessDetails();
-			m.addObject("job", job);
+			
 		} else {
-			//m = status();
 			String msg="You have already applied for a job";
 				m.addObject("msg", msg);
-				m.setViewName("message");
+				m.setViewName(MESSAGE);
 				
 
 		}
@@ -72,32 +71,38 @@ public class JobProcessController {
 
 	@RequestMapping(value = "/apply")
 	public ModelAndView applyforjob(@RequestParam("id") int id, HttpServletRequest request) {
-		JobApplication jobApplication = JobApplicationService.getJob(id);
+		ModelAndView mav=new ModelAndView("CandidateJobApplication");
+		 jobApplication = jobProcessService.getJob(id);
 		HttpSession session = request.getSession();
 		session.setAttribute("jid", jobApplication.getJid());
-
-		ModelAndView mav = new ModelAndView("CandidateJobApplication");
+		job = new JobProcessDetails();
+		mav.addObject("job", job);
 		return mav;
+		
 
 	}
 
-	@RequestMapping(value = "/uploadresume", method = RequestMethod.POST)
-	public ModelAndView handleFileUpload(@ModelAttribute("job") JobProcessDetails job, HttpServletRequest request) {
+	@PostMapping(value = "/uploadresume")
+	public ModelAndView handleFileUpload(@ModelAttribute("job") JobProcessDetailsPOJO jobPOJO, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 
 		HttpSession session = request.getSession();
 
 		int jid = (int) session.getAttribute("jid");
+		
+		JobProcessDetails jobs = new JobProcessDetails();
+		BeanUtils.copyProperties(jobPOJO, jobs);
+		
 		// save job ID
-		jobApplication = JobApplicationService.getJob(jid);
-		job.setJobApplication(jobApplication);
+		jobApplication = jobProcessService.getJob(jid);
+		jobs.setJobApplication(jobApplication);
 		// save User ID
-		job.setUser(user);
-		user.setJobProcessDetails(job);
+		jobs.setUser(user);
+		user.setJobProcessDetails(jobs);
 		String msg;
 		// Save Resume
-		if(job.getResume()!=null) {
-		JobApplicationService.save(job);
+		if(jobs.getResume().getSize() != 0) {
+			jobProcessService.save(jobs);
 			 msg="You have successfully applied for a job";
 		}
 		else
@@ -106,37 +111,40 @@ public class JobProcessController {
 		}
 		mav.addObject("msg", msg);
 		
-	mav.setViewName("message");
+	mav.setViewName(MESSAGE);
 	
 		
-	//	mav = status();
-
-		return mav;
+	return mav;
 	}
 	@RequestMapping(value = "/status")
-	public ModelAndView status() {
+	public ModelAndView status(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		String status;
+		HttpSession session = request.getSession();
+
+		int id = (int) session.getAttribute("id");
+
+		user = userService.viewprofile(id);
 		job = user.getJobProcessDetails();
 		if(job==null)
 		{
 			String msg="You have not applied for a job";
 			mav.addObject("msg", msg);
-		mav.setViewName("message");
+		mav.setViewName(MESSAGE);
 		return mav;
 			
 		}
-		System.out.println(job.getJobid());
 		mav.addObject("job", job);
 		jobApplication = job.getJobApplication();
 		mav.addObject("jobApplication", jobApplication);
-		if (job.getSelected()) {
+		boolean a=job.getSelected();
+		if (a) {
 			if (jobApplication.getRounds() == job.getCurrentround()) {
 				status = "Congrats!!!! You are selected for the applied position";
 			} else {
 				status = "Congrats!!!! You are selected for the next round";
 			}
-		} else if (job.getSelected() == false && job.getCurrentround() > 0) {
+		} else if ( job.getCurrentround() > 0) {
 			status = "Better luck next time!!";
 		} else {
 			status = "Waiting for interview";

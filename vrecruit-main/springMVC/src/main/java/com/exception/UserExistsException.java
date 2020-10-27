@@ -1,7 +1,7 @@
 package com.exception;
 
 public class UserExistsException extends Exception{
-	String errormsg;
+	final String errormsg;
 	
 	public UserExistsException(String exceptionMsg) {
 	      this.errormsg = exceptionMsg;

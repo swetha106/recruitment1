@@ -1,21 +1,20 @@
-package com.entities;
-
-
+package com.pojo;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-@Entity
-@Table(name = "jobprocess")
-public class JobProcessDetails {
+import com.entities.JobApplication;
+import com.entities.User;
+
+
+
+public class JobProcessDetailsPOJO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -74,8 +73,6 @@ public class JobProcessDetails {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-
 	
 	
 	public int getCurrentround() {

@@ -1,7 +1,7 @@
 package com.exception;
 
 public class UserLoginException extends Exception{
-	String errormsg;
+	final String errormsg;
 	
 	public UserLoginException(String exceptionMsg) {
 	      this.errormsg = exceptionMsg;

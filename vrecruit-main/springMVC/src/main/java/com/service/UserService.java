@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.entities.User;
 
-//import com.project.recruitmentoperation.entity.User;
-
 public interface UserService {
 	
 	 public void saveCustomer(User user);

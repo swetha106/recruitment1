@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xml:lang="en">
+
 <head>
+<title>side bar</title>
 <style>
 body {
   font-family: "Lato", sans-serif;
@@ -56,7 +58,7 @@ body {
 
 <div class="sidenav">
 
-			<a class="navbar-brand" href="/app"><font color="aqua">V</font>
+			<a class="navbar-brand" href="/app">V</font>
 				Recruit</a>
   <a href="viewprofile">view profile</a>
   <a href="editprofile">edit profile</a>

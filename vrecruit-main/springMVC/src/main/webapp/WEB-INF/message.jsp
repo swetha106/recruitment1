@@ -6,7 +6,7 @@
 
 	<div class="center">
 	
- <h2 align="center" font-size: 15px;>${msg}</h2>
+ <h2 id="message" font-size: 15px;>${msg}</h2>
  </div>
  </div>
 

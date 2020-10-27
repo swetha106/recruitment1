@@ -10,6 +10,10 @@
 		method="post">
 
 		<table >
+		<caption></caption>
+		<tr>
+		<th id="user"> REGISTER USER</th>
+		</tr>
 		  <form:hidden path="id" />
 		
 			<tr>

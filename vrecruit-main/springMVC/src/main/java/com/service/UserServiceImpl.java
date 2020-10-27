@@ -9,10 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dao.UserDao;
 import com.entities.User;
 
-//import com.project.recruitmentoperation.dao.UserDao;
-//import com.project.recruitmentoperation.entity.User;
-
-
 @Service
 
 public class UserServiceImpl implements UserService{

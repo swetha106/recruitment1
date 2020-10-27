@@ -1,6 +1,5 @@
-package com.entities;
+package com.pojo;
 
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -9,9 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
+import com.entities.Interviewer;
+import com.entities.JobAppCategory;
+import com.entities.JobAppPositionType;
 
-@Entity
-public class JobApplication {
+
+
+public class JobApplicationPOJO {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

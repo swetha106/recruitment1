@@ -12,9 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.entities.JobApplication;
 import com.entities.JobProcessDetails;
 import com.entities.User;
-//import com.project.recruitmentoperation.entity.JobApplication;
-//import com.project.recruitmentoperation.entity.JobProcessDetails;
-//import com.project.recruitmentoperation.entity.User;
 
 @Repository
 @Transactional
@@ -42,48 +39,42 @@ public class JobProcessDaoImpl implements JobProcessDao {
 	@Override
 	public boolean validate(User user) {
 		JobProcessDetails users = null;
+		boolean a;
 		try (Session session = sessionFactory.openSession()) {
 			users = (JobProcessDetails) session.createQuery("FROM JobProcessDetails U WHERE U.user = :user ")
 					.setParameter("user", user).uniqueResult();
 
 		}
 		if (users == null)
-			return true;
+			a=true;
 		else
-			return false;
+			a= false;
+		return a;
 	}
 
 	@Override
 	public JobApplication getJob(int id) {
 		Session currentSession = sessionFactory.getCurrentSession();
-		JobApplication jobApplication = (JobApplication) currentSession.get(JobApplication.class, id);
-		return jobApplication;
+		return currentSession.get(JobApplication.class, id);
+		
 
 	}
 
 	@Override
 	public List<JobProcessDetails> getCandidatesJobProcess(int id) {
 		try (Session session = sessionFactory.openSession()) {
-			List<JobProcessDetails> jobProcessList = (List<JobProcessDetails>) session
+			return session
 					.createQuery("FROM JobProcessDetails U WHERE U.jobApplication.id = " + id).list();
-			return jobProcessList;
+			
 		}
 	}
 
 	@Transactional
 	@Override
 	public List<JobProcessDetails> update(JobProcessDetails obj) {
-//			List<JobProcessDetails> jobProcessList=null;
-//			try (Session session = sessionFactory.openSession()) {
-//			sessionFactory.getCurrentSession().update(obj);
-//			jobProcessList= (List<JobProcessDetails>) session.createQuery("FROM JobProcessDetails").list();
-//			return jobProcessList;
-//			}
-//			catch(Exception e) {e.printStackTrace();}
-//			return jobProcessList;
 		this.hibernateTemplate.saveOrUpdate(obj);
-		List<JobProcessDetails> jobApp = this.hibernateTemplate.loadAll(JobProcessDetails.class);
-		return jobApp;
+		return this.hibernateTemplate.loadAll(JobProcessDetails.class);
+		 
 
 	}
 
